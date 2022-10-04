@@ -10,15 +10,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: local change
-        shell: bash
-        run: echo "One more line" >> README.md
-
       - name: git setup
         shell: bash
         run: |
           git config user.name "GHA on behalf of Bruce Adams"
           git config user.email "Bruce Adams <bruce.adams@acm.org>"
+
+      - name: git reset to main
+        shell: bash
+        run: |
+          git fetch
+          git reset --hard origin/main
+
+      - name: local change
+        shell: bash
+        run: echo "One more line" >> README.md
 
       - name: git add & commit
         shell: bash

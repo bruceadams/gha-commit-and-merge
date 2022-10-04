@@ -28,4 +28,4 @@ jobs:
 
       - name: git push
         shell: bash
-        run: git push origin main
+        run: git push origin HEAD:main

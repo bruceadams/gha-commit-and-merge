@@ -1,0 +1,31 @@
+name: experiment with git commit and merge
+
+on: [push, pull_request]
+
+jobs:
+  fiddle:
+    name: Append to the README
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: local change
+        shell: bash
+        run: echo "One more line" >> README.md
+
+      - name: git setup
+        shell: bash
+        run: |
+          git config user.name "GHA on behalf of Bruce Adams"
+          git config user.email "Bruce Adams <bruce.adams@acm.org>"
+
+      - name: git add & commit
+        shell: bash
+        run: |
+          git add README.md
+          git commit --message="Just one more line…"
+
+      - name: git push
+        shell: bash
+        run: git push origin main

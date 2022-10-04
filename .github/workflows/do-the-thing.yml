@@ -24,7 +24,7 @@ jobs:
 
       - name: local change
         shell: bash
-        run: echo "One more line" >> README.md
+        run: echo -e "\n- One more line" >> README.md
 
       - name: git add & commit
         shell: bash

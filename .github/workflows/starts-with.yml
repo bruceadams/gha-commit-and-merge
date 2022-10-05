@@ -8,5 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        if: startsWith( 'freddy', 'fe' )
+        if: startsWith( 'freddy', "fr" )
         uses: actions/checkout@v3

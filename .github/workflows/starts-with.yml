@@ -1,0 +1,12 @@
+name: experiment with startsWith
+
+on: [push, pull_request]
+
+jobs:
+  fiddle:
+    name: startsWith say what?
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        if: startsWith( 'freddy', 'fe' )
+        uses: actions/checkout@v3

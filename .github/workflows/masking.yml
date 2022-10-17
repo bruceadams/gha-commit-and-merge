@@ -1,0 +1,40 @@
+name: experiment with startsWith
+
+on: [push, pull_request]
+
+jobs:
+  one:
+    runs-on: ubuntu-latest
+    outputs:
+      sensitive: ${{ steps.create.outputs.sensitive }}
+      vanilla: ${{ steps.create.outputs.vanilla }}
+      jabberwocky: ${{ steps.create.outputs.jabberwocky }}
+      snip: ${{ steps.create.outputs.snip }}
+    steps:
+      - name: create a masked thing for output
+        id: create
+        run: |
+          WHAZZIT=1l3j4jd834sd84nfdmnsiue89
+          echo "::add-mask::$WHAZZIT"
+          echo $WHAZZIT
+          echo "sensitive=$WHAZZIT" >> $GITHUB_OUTPUT
+          echo "vanilla=ice-cream" >> $GITHUB_OUTPUT
+          JABBERWOCKY="'Twas brillig, and the slithy toves Did gyre and gimble in the wabe; All mimsy were the borogoves, And the mome raths outgrabe."
+          echo "jabberwocky=$JABBERWOCKY" >> $GITHUB_OUTPUT
+          SNIP="All mimsy were the borogoves"
+          echo "snip=$SNIP" >> $GITHUB_OUTPUT
+
+
+  two:
+    runs-on: ubuntu-latest
+    needs: [one]
+    steps:
+      - name: how about that mask
+        env:
+          SECRET: ${{ needs.one.outputs.snip }}
+        run: |
+          echo "::add-mask::$SECRET"
+          echo "${{ needs.one.outputs.vanilla }}"
+          echo "${{ needs.one.outputs.sensitive }}"
+          echo "${{ needs.one.outputs.jabberwocky }}"
+          echo "${{ needs.one.outputs.snip }}"

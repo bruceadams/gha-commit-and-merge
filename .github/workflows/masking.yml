@@ -9,11 +9,13 @@ jobs:
       sensitive: ${{ steps.create.outputs.sensitive }}
       vanilla: ${{ steps.create.outputs.vanilla }}
       jabberwocky: ${{ steps.create.outputs.jabberwocky }}
-      snip: ${{ steps.create.outputs.snip }}
     steps:
       - name: create a masked thing for output
         id: create
         run: |
+          ls -al $GITHUB_OUTPUT
+          ls -al $GITHUB_ENV
+          ls -al /home/runner/work/_temp/_runner_file_commands
           WHAZZIT=1l3j4jd834sd84nfdmnsiue89
           echo "::add-mask::$WHAZZIT"
           echo $WHAZZIT
@@ -22,7 +24,7 @@ jobs:
           JABBERWOCKY="'Twas brillig, and the slithy toves Did gyre and gimble in the wabe; All mimsy were the borogoves, And the mome raths outgrabe."
           echo "jabberwocky=$JABBERWOCKY" >> $GITHUB_OUTPUT
           SNIP="All mimsy were the borogoves"
-          echo "snip=$SNIP" >> $GITHUB_OUTPUT
+          echo "snip=$SNIP" >> $GITHUB_ENV
 
 
   two:
@@ -30,11 +32,8 @@ jobs:
     needs: [one]
     steps:
       - name: how about that mask
-        env:
-          SECRET: ${{ needs.one.outputs.snip }}
         run: |
-          echo "::add-mask::$SECRET"
           echo "${{ needs.one.outputs.vanilla }}"
+          cat $GITHUB_OUTPUT
           echo "${{ needs.one.outputs.sensitive }}"
           echo "${{ needs.one.outputs.jabberwocky }}"
-          echo "${{ needs.one.outputs.snip }}"
